@@ -1,50 +1,74 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Space Spiders Arena 0.0.7</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Space Spiders Arena – Tactibara</title>
+    <meta name="description" content="Space Spiders Arena is a PvP first-person shooter where spider robots flip gravity to fight across floors, walls and ceilings of space arenas. Play the demo in your browser.">
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body>
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=1280 height=720 tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
+    <div class="page">
+
+      <header class="top">
+        <a class="brand" href="https://tactibara.github.io/tactibara-website/" title="Back to Tactibara">
+          <svg class="back" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.7 4.3a1 1 0 0 1 0 1.4L9.4 12l6.3 6.3a1 1 0 1 1-1.4 1.4l-7-7a1 1 0 0 1 0-1.4l7-7a1 1 0 0 1 1.4 0z"/></svg>
+          <img src="TemplateData/logo.png" alt="">
+          <span class="brand-text"><span class="brand-name">Tactibara</span><span class="brand-sub">Back to studio home</span></span>
+        </a>
+        <h1>Space Spiders Arena <span class="badge">Demo v0.0.8</span></h1>
+      </header>
+
+      <main class="stage">
+        <div id="unity-container" class="unity-desktop">
+          <canvas id="unity-canvas" width=1280 height=720 tabindex="-1"></canvas>
+
+          <div id="unity-loading-bar">
+            <img id="unity-logo" src="TemplateData/logo.png" alt="">
+            <div id="unity-loading-title">Space Spiders Arena</div>
+            <div id="unity-progress-bar-empty">
+              <div id="unity-progress-bar-full"></div>
+            </div>
+            <div id="unity-progress-text">Loading…</div>
+          </div>
+
+          <div id="unity-warning"></div>
         </div>
-      </div>
-      <div id="unity-warning"> </div>
-      <div id="unity-footer">
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">Space Spiders Arena</div>
-      </div>
+      </main>
+
+      <footer class="bottom">
+        <div class="download">
+          <a class="button primary" href="https://drive.google.com/uc?export=download&id=1OfB58ul4187WrXpXl4lJ1BXsa-AyHFci" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a1 1 0 0 1 1 1v9.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42l2.3 2.3V4a1 1 0 0 1 1-1zM5 17a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z"/></svg>
+            Download for Windows
+          </a>
+          <span class="hint">For the best experience, play the standalone Windows version.</span>
+        </div>
+        <button id="unity-fullscreen-button" class="button" type="button" disabled title="Fullscreen">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4a1 1 0 0 1 0 2H5v3a1 1 0 0 1-1 1zm16 0a1 1 0 0 1-1-1V5h-3a1 1 0 1 1 0-2h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zM4 21a1 1 0 0 1-1-1v-4a1 1 0 1 1 2 0v3h3a1 1 0 1 1 0 2H4zm12 0a1 1 0 1 1 0-2h3v-3a1 1 0 1 1 2 0v4a1 1 0 0 1-1 1h-4z"/></svg>
+          Fullscreen
+        </button>
+      </footer>
+
     </div>
-	<div id="download-text">
-	  <a href="https://drive.google.com/uc?export=download&id=1OfB58ul4187WrXpXl4lJ1BXsa-AyHFci" target="_blank">For the best experience, download the standalone Windows version</a>
-    </div>
+
     <script>
       var canvas = document.querySelector("#unity-canvas");
 
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
+      // Shows a temporary message banner for a few seconds, or a permanent
+      // error message on top of the canvas if type=='error'.
       function unityShowBanner(msg, type) {
         var warningBanner = document.querySelector("#unity-warning");
         function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+          warningBanner.style.display = warningBanner.children.length ? 'flex' : 'none';
         }
         var div = document.createElement('div');
+        div.className = type || 'info';
         div.innerHTML = msg;
         warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+        if (type != 'error') {
           setTimeout(function() {
             warningBanner.removeChild(div);
             updateBannerVisibility();
@@ -54,82 +78,70 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/ssa-game-prototype.loader.js";
+      var loaderUrl = buildUrl + "/SpaceSpidersArena_Web.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/ssa-game-prototype.data.unityweb",
-        frameworkUrl: buildUrl + "/ssa-game-prototype.framework.js.unityweb",
-        codeUrl: buildUrl + "/ssa-game-prototype.wasm.unityweb",
+        dataUrl: buildUrl + "/SpaceSpidersArena_Web.data.unityweb",
+        frameworkUrl: buildUrl + "/SpaceSpidersArena_Web.framework.js.unityweb",
+        codeUrl: buildUrl + "/SpaceSpidersArena_Web.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "Tactibara",
         productName: "Space Spiders Arena",
-        productVersion: "0.0.2",
+        productVersion: "0.0.8",
         showBanner: unityShowBanner,
-        // errorHandler: function(err, url, line) {
-        //    alert("error " + err + " occurred at line " + line);
-        //    // Return 'true' if you handled this error and don't want Unity
-        //    // to process it further, 'false' otherwise.
-        //    return true;
-        // },
       };
 
-      // By default, Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
+      // Unity keeps the WebGL render target matched to the canvas DOM size
+      // (scaled by devicePixelRatio), so the canvas is sized purely via CSS.
       // config.matchWebGLToCanvasSize = false;
 
-      // If you would like all file writes inside Unity Application.persistentDataPath
-      // directory to automatically persist so that the contents are remembered when
-      // the user revisits the site the next time, uncomment the following line:
+      config.devicePixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+
       // config.autoSyncPersistentDataPath = true;
-      // This autosyncing is currently not the default behavior to avoid regressing
-      // existing user projects that might rely on the earlier manual
-      // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
-      // expected to change.
 
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-
+        // Mobile: fill the whole browser client area with the game canvas.
         var meta = document.createElement('meta');
         meta.name = 'viewport';
         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
         document.getElementsByTagName('head')[0].appendChild(meta);
         document.querySelector("#unity-container").className = "unity-mobile";
+        document.body.className = "unity-mobile";
         canvas.className = "unity-mobile";
 
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
         // config.devicePixelRatio = 1;
-
-
-      } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-        canvas.style.width = "1280px";
-        canvas.style.height = "720px";
       }
 
-      document.querySelector("#unity-loading-bar").style.display = "block";
+      document.querySelector("#unity-loading-bar").style.display = "flex";
+
+      var progressFull = document.querySelector("#unity-progress-bar-full");
+      var progressText = document.querySelector("#unity-progress-text");
+      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
 
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
-          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                document.querySelector("#unity-loading-bar").style.display = "none";
-                document.querySelector("#unity-fullscreen-button").onclick = () => {
-                  unityInstance.SetFullscreen(1);
-                };
-
-              }).catch((message) => {
-                alert(message);
-              });
-            };
+          var pct = Math.round(100 * progress);
+          progressFull.style.width = pct + "%";
+          progressText.textContent = pct < 100 ? "Loading… " + pct + "%" : "Starting…";
+        }).then((unityInstance) => {
+          document.querySelector("#unity-loading-bar").style.display = "none";
+          fullscreenButton.disabled = false;
+          fullscreenButton.onclick = () => {
+            unityInstance.SetFullscreen(1);
+          };
+        }).catch((message) => {
+          progressText.textContent = "Failed to load";
+          unityShowBanner(message, 'error');
+        });
+      };
+      script.onerror = () => {
+        progressText.textContent = "Failed to load";
+        unityShowBanner("Could not load the game loader (" + loaderUrl + ").", 'error');
+      };
 
       document.body.appendChild(script);
-
     </script>
   </body>
 </html>
